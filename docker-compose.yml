@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  gowtham-deals-ai:
+    build: .
+    container_name: gowtham-deals-ai-manager
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - AMAZON_TAG=gowthamdeals-21
+      - YOUTUBE_CHANNEL_NAME="Gowtham Deals"
+      - INSTAGRAM_HANDLE="@gowthamdeals"
+      # Insert your API keys below or into a .env file
+      - YOUTUBE_CLIENT_ID=${YOUTUBE_CLIENT_ID}
+      - YOUTUBE_CLIENT_SECRET=${YOUTUBE_CLIENT_SECRET}
+      - YOUTUBE_REFRESH_TOKEN=${YOUTUBE_REFRESH_TOKEN}
+      - META_PAGE_ACCESS_TOKEN=${META_PAGE_ACCESS_TOKEN}
+      - INSTAGRAM_ACCOUNT_ID=${INSTAGRAM_ACCOUNT_ID}
+      - KEEPA_API_KEY=${KEEPA_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./generated_videos:/app/generated_videos
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
